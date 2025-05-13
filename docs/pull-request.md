@@ -41,6 +41,40 @@ markdownファイルに一度出力したものを利用して、GitHubのDescri
 何度か失敗した場合は諦めて、手動で更新してもらうように促す。
 
 
+### トラブルシューティング
+
+GitHub CLIの使用中に以下のようなエラーが発生することがあります：
+
+```bash
+head: |: No such file or directory
+head: cat: No such file or directory
+```
+
+これは内部的に使用されている`head`コマンドのパイプ処理に関連する問題です。以下の方法で解決できます：
+
+1. **リダイレクトを使用する**:
+   ```bash
+   # ファイルにリダイレクトしてから表示する
+   gh pr diff $prId > pr_diff.txt && cat pr_diff.txt
+   gh pr view $prId --json body > pr_body.json && cat pr_body.json
+   ```
+
+2. **GitHub CLIを再インストールする**:
+   ```bash
+   brew reinstall gh
+   ```
+
+3. **パイプの代わりにリダイレクトを使用する**:
+   特に`--json`オプションを使用する場合は、常にファイルへのリダイレクトを使用することをお勧めします。
+
+4. **ブラウザで直接開く**:
+   ```bash
+   gh pr view $prId --web
+   ```
+
+いずれの方法でも解決しない場合は、GitHubのWebインターフェースを使用するか、他のチームメンバーに支援を求めてください。
+
+
 ## PR説明の構造
 
 PR説明は以下の構造に従って作成します：
